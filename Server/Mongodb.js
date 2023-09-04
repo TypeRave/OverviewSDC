@@ -36,4 +36,3 @@ const productSchema = mongoose.Schema({
   relatedIDS:[Number],
 })
 const productModel = mongoose.model('Product', productSchema);
-
