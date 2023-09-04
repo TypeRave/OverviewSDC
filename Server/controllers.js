@@ -63,7 +63,7 @@ exports.getStyles = (req, res) => {
       }
 
       const responseObj = {
-        product_id: productId,
+        product_id: Number(productId),
         results: resultsArr,
       };
       res.send(responseObj);
@@ -99,7 +99,7 @@ exports.getFeatures = (req, res) => {
       const responseObj = {};
       if (response.rows.length > 0) {
         if (Object.keys(responseObj).length === 0) {
-          responseObj.id = response.rows[0].productid;
+          responseObj.id = Number(response.rows[0].productid);
           responseObj.name = response.rows[0].name;
           responseObj.slogan = response.rows[0].slogan;
           responseObj.description = response.rows[0].description;
