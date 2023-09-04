@@ -16,7 +16,6 @@ app.listen(PORTSERV, () => {
   console.log(`Server is listening on port ${PORTSERV}`);
 });
 
-
 // require('dotenv').config();
 // const path = require('path');
 // const { Client } = require('pg');
