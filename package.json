@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "node server/index.js",
+    "start": "node Server/index.js",
     "test": "jest",
-    "lint": "eslint './server/**/*.js'"
+    "lint": "eslint './Server/**/*.js'"
   },
   "keywords": [],
   "author": "",
