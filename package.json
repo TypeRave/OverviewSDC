@@ -2,10 +2,8 @@
   "name": "ProductsSDC",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "server-dev": "nodemon index.js",
-    "bundle": "webpack",
+    "start": "nodemon server/index.js",
     "test": "jest",
     "lint": "eslint './server/**/*.js'"
   },
