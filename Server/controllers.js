@@ -4,8 +4,9 @@ exports.getProduct = (req, res) => {
   const page = req.query.page || 1;
   const count = req.query.count || 5;
   const startIndex = (page * count) - count;
-  const query = `SELECT * FROM product LIMIT ${count} OFFSET ${startIndex} `;
-  connection.getStyles(query)
+  const query = `SELECT * FROM product WHERE id > ${startIndex} ORDER BY id limit ${count}`;
+  // const query = `SELECT * FROM product LIMIT ${count} OFFSET ${startIndex}`;
+  connection.get(query)
     .then((response) => {
       res.send(response.rows);
     })
@@ -18,7 +19,7 @@ exports.getProduct = (req, res) => {
 exports.getStyles = (req, res) => {
   const productId = req.query.product_id;
   const query = `SELECT styles.*, styles.id AS styleId, skus.*, skus.id AS skuID, photos.*, photos.id AS photoID FROM styles LEFT JOIN skus ON styles.id = skus.styleId LEFT JOIN photos on photos.styleId = styles.id WHERE styles.productID = ${productId}`;
-  connection.getStyles(query)
+  connection.get(query)
     .then((response) => {
       const resultsArr = [];
       const tempObj = {};
@@ -77,7 +78,7 @@ exports.getStyles = (req, res) => {
 exports.getRelated = (req, res) => {
   const productId = req.query.product_id;
   const query = `SELECT related_product_id FROM related WHERE current_product_id = ${productId}`;
-  connection.getRelated(query)
+  connection.get(query)
     .then((response) => {
       const responseArr = [];
       for (let i = 0; i < response.rows.length; i += 1) {
@@ -94,7 +95,7 @@ exports.getRelated = (req, res) => {
 exports.getFeatures = (req, res) => {
   const productId = req.query.product_id;
   const query = `SELECT * FROM product INNER JOIN features ON product.id = features.productid WHERE product.id = ${productId}`;
-  connection.getRelated(query)
+  connection.get(query)
     .then((response) => {
       const responseObj = {};
       if (response.rows.length > 0) {

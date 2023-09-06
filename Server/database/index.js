@@ -18,14 +18,6 @@ client.connect()
     console.log(err);
   });
 
-exports.getProduct = (query) => (
-  client.query(query)
-);
-
-exports.getRelated = (query) => (
-  client.query(query)
-);
-
-exports.getStyles = (query) => (
+exports.get = (query) => (
   client.query(query)
 );
