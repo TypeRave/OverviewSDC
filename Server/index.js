@@ -10,6 +10,7 @@ app.get('/product/features', controllers.getFeatures);
 app.get('/product/styles', controllers.getStyles);
 app.get('/product/related', controllers.getRelated);
 app.get('/product/relatedStyle', controllers.getStyles);
+app.get(`/${process.env.LOADERIO}.txt`, controllers.getLoader);
 
 const PORTSERV = process.env.PORTSERV || 3000;
 app.listen(PORTSERV, () => {

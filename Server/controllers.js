@@ -5,7 +5,6 @@ exports.getProduct = (req, res) => {
   const count = req.query.count || 5;
   const startIndex = (page * count) - count;
   const query = `SELECT * FROM product WHERE id > ${startIndex} ORDER BY id limit ${count}`;
-  // const query = `SELECT * FROM product LIMIT ${count} OFFSET ${startIndex}`;
   connection.get(query)
     .then((response) => {
       res.send(response.rows);
@@ -122,4 +121,8 @@ exports.getFeatures = (req, res) => {
       console.error(err);
       res.status(500);
     });
+};
+
+exports.getLoader = (req, res) => {
+  res.send(process.env.LOADERIO);
 };
