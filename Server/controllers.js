@@ -1,3 +1,4 @@
+const cache = require('memory-cache');
 const connection = require('./database');
 
 exports.getProduct = (req, res) => {
@@ -17,61 +18,67 @@ exports.getProduct = (req, res) => {
 
 exports.getStyles = (req, res) => {
   const productId = req.query.product_id;
-  const query = `SELECT styles.*, styles.id AS styleId, skus.*, skus.id AS skuID, photos.*, photos.id AS photoID FROM styles LEFT JOIN skus ON styles.id = skus.styleId LEFT JOIN photos on photos.styleId = styles.id WHERE styles.productID = ${productId}`;
-  connection.get(query)
-    .then((response) => {
-      const resultsArr = [];
-      const tempObj = {};
-      const photosCheck = {};
+  if (cache.productId) {
+    const body = cache.get(productId);
+    res.send(body);
+  } else {
+    const query = `SELECT styles.*, styles.id AS styleId, skus.*, skus.id AS skuID, photos.*, photos.id AS photoID FROM styles LEFT JOIN skus ON styles.id = skus.styleId LEFT JOIN photos on photos.styleId = styles.id WHERE styles.productID = ${productId}`;
+    connection.get(query)
+      .then((response) => {
+        const resultsArr = [];
+        const tempObj = {};
+        const photosCheck = {};
 
-      for (let i = 0; i < response.rows.length; i += 1) {
-        const styleId = response.rows[i].styleid;
-        if (!tempObj[styleId]) {
-          tempObj[styleId] = {};
-          if (!response.rows[i].default_style) {
-            tempObj[styleId].default = false;
-          } else {
-            tempObj[styleId].default = true;
+        for (let i = 0; i < response.rows.length; i += 1) {
+          const styleId = response.rows[i].styleid;
+          if (!tempObj[styleId]) {
+            tempObj[styleId] = {};
+            if (!response.rows[i].default_style) {
+              tempObj[styleId].default = false;
+            } else {
+              tempObj[styleId].default = true;
+            }
+            tempObj[styleId].name = response.rows[i].name;
+            tempObj[styleId].original_price = response.rows[i].original_price;
+            tempObj[styleId].photos = [];
+            tempObj[styleId].sale_price = response.rows[i].sale_price;
+            tempObj[styleId].skus = {};
+            tempObj[styleId].style_id = response.rows[i].styleid;
           }
-          tempObj[styleId].name = response.rows[i].name;
-          tempObj[styleId].original_price = response.rows[i].original_price;
-          tempObj[styleId].photos = [];
-          tempObj[styleId].sale_price = response.rows[i].sale_price;
-          tempObj[styleId].skus = {};
-          tempObj[styleId].style_id = response.rows[i].styleid;
+          const rowSku = response.rows[i].skuid;
+          if (!tempObj[styleId].skus[rowSku]) {
+            tempObj[styleId].skus[rowSku] = {
+              quantity: response.rows[i].quantity,
+              size: response.rows[i].size,
+            };
+          }
+          const currentPhoto = response.rows[i].photoid;
+          if (!photosCheck[currentPhoto]) {
+            photosCheck[currentPhoto] = true;
+            const photosObj = {
+              thumbnail_url: response.rows[i].thumbnail_url,
+              url: response.rows[i].url,
+            };
+            tempObj[styleId].photos.push(photosObj);
+          }
         }
-        const rowSku = response.rows[i].skuid;
-        if (!tempObj[styleId].skus[rowSku]) {
-          tempObj[styleId].skus[rowSku] = {
-            quantity: response.rows[i].quantity,
-            size: response.rows[i].size,
-          };
+        const keys = Object.keys(tempObj);
+        for (let i = 0; i < keys.length; i += 1) {
+          resultsArr.push(tempObj[keys[i]]);
         }
-        const currentPhoto = response.rows[i].photoid;
-        if (!photosCheck[currentPhoto]) {
-          photosCheck[currentPhoto] = true;
-          const photosObj = {
-            thumbnail_url: response.rows[i].thumbnail_url,
-            url: response.rows[i].url,
-          };
-          tempObj[styleId].photos.push(photosObj);
-        }
-      }
-      const keys = Object.keys(tempObj);
-      for (let i = 0; i < keys.length; i += 1) {
-        resultsArr.push(tempObj[keys[i]]);
-      }
 
-      const responseObj = {
-        product_id: Number(productId),
-        results: resultsArr,
-      };
-      res.send(responseObj);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500);
-    });
+        const responseObj = {
+          product_id: Number(productId),
+          results: resultsArr,
+        };
+        cache.put(productId, responseObj);
+        res.send(responseObj);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500);
+      });
+  }
 };
 
 exports.getRelated = (req, res) => {
