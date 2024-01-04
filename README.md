@@ -17,7 +17,7 @@ cd TypeRave/Products
 ```bash
 npm install
 ```
-### 4 Create a copy of the example.env file and rename it .env
+### 4. Create a copy of the example.env file and rename it .env
 This is where you will be adding in the information about your postgres database
 
 ### 5. Start up the postgres database
@@ -37,14 +37,14 @@ In the postgres shell, use \i filePathToFile
 npm start
 ```
 ## Routes
-/products
+/product
 returns a list of 5 products unless otherwise specified through the page and count parameters product-list
 
-/products/:product_id
+/product/features
 returns information about a particular product product-info
 
-/products/:product_id/styles
+/product/styles
 returns stlye information about a particular product and how many items of each style/size are available. product-styles-part1 product-styles-part2
 
-/products/:product_id/related
+/product/related
 returns a list of product ids that are related to the currently selected product. related-products
