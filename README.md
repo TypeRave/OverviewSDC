@@ -1,8 +1,7 @@
 # OverviewSDC
 
-Products
-Overview
-This is the backend for an e-commerce app. This component is responsible for supplying the front-end with information about the products currently stored in the database.
+## Products Overview
+This is the backend API for an e-commerce application. This component is responsible for supplying the front-end with information about the products currently stored in the database.
 
 ## Usage
 ### 1. Clone the repo
@@ -37,14 +36,30 @@ In the postgres shell, use \i filePathToFile
 npm start
 ```
 ## Routes
-/product
+### /product
 returns a list of 5 products unless otherwise specified through the page and count parameters product-list
+```
+exports.getProduct = (req, res) => {
+  const page = req.query.page || 1;
+  const count = req.query.count || 5;
+  const startIndex = (page * count) - count;
+  const query = `SELECT * FROM product WHERE id > ${startIndex} ORDER BY id limit ${count}`;
+  connection.get(query)
+    .then((response) => {
+      res.send(response.rows);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500);
+    });
+};
+```
 
-/product/features
+### /product/features
 returns information about a particular product product-info
 
-/product/styles
+### /product/styles
 returns stlye information about a particular product and how many items of each style/size are available. product-styles-part1 product-styles-part2
 
-/product/related
+### /product/related
 returns a list of product ids that are related to the currently selected product. related-products
