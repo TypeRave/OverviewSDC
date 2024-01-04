@@ -20,23 +20,23 @@ npm install
 ### 4 Create a copy of the example.env file and rename it .env
 This is where you will be adding in the information about your postgres database
 
-5. Start up the postgres database
+### 5. Start up the postgres database
 On linux, this would be done through
 ```bash
 sudo service postgresql start
 ```
-6. Navigate the postgres client and then import the database schema
+### 6. Navigate the postgres client and then import the database schema
 On Linux (if you have a port different from the default, then use -p port number )
 ```bash
 sudo -u postgres psql
 ```
 In the postgres shell, use \i filePathToFile
 
-7. Run npm start to start the application
+### 7. Run npm start to start the application
 ```bash
 npm start
 ```
-Routes
+## Routes
 /products
 returns a list of 5 products unless otherwise specified through the page and count parameters product-list
 
