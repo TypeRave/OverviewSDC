@@ -10,7 +10,7 @@ git clone https://github.com/TypeRave/Products.git
 ```
 ### 2. CD into the file directory
 ```bash
-cd TypeRave/Products
+cd TypeRave/OverviewSDC
 ```
 ### 3. Run npm install to install all necessary dependencies
 ```bash
@@ -82,8 +82,10 @@ returns a list of 5 products unless otherwise specified through the page and cou
     }
 ]
 ```
+### /product/:product_id
+returns information about a particular product
 
-### /product/features
+### /product/:product_id/features
 returns information about a particular product product-info
 
 ### /product/styles
