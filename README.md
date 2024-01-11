@@ -10,7 +10,7 @@ git clone https://github.com/TypeRave/Products.git
 ```
 ### 2. CD into the file directory
 ```bash
-cd TypeRave/OverviewSDC
+cd filename/OverviewSDC
 ```
 ### 3. Run npm install to install all necessary dependencies
 ```bash
