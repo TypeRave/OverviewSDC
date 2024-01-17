@@ -44,13 +44,17 @@ returns a list of 5 products unless otherwise specified through the page and cou
 ### /product/:product_id
 returns information about a particular product
 
-
-
-### /product/:product_id/features
-returns information about a particular product product-info
+![product_id](https://github.com/TypeRave/OverviewSDC/blob/main/Assets/Product%20ID.png)
 
 ### /product/styles
 returns stlye information about a particular product and how many items of each style/size are available. product-styles-part1 product-styles-part2
 
+![styles](https://github.com/TypeRave/OverviewSDC/blob/main/Assets/Skus.png)
+![styles2](https://github.com/TypeRave/OverviewSDC/blob/main/Assets/Skus2.png)
+
 ### /product/related
 returns a list of product ids that are related to the currently selected product. related-products
+
+![related](https://github.com/TypeRave/OverviewSDC/blob/main/Assets/Related.png)
+
+
